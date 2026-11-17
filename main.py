@@ -1,10 +1,10 @@
 import json,os,urllib.request as u
 U=os.environ.get("MAKEFUN_ENV_URL") or exit(1)
 V=(0,100,320,330,500,900,0)
-T=["::::::::DDDDDDDD<<>@@><<;;<??<;;:::>>:::;98::89;;<<66<<;::::::::","0244442026::::624:<==<:44;=>>=;44:=>>=:44;<==<;426:;;:6202444420","688888868::::::88:;<<;:88;;<<;;88:<<<<:88<<<<<<88;::::;868888886",":"*64,":"*64,"422002244220022442200224422002246442244686666668>>::::>>>@<::<@>"]
+T=["::::::::DDDDDDDD<<>@@><<;;<??<;;:::>>:::;98::89;;<<66<<;::::::::","0244442026::::624:<==<:44;=>>=;44:=>>=:44;<==<;426:;;:6202444420","688888868::::::88:;<<;:88;;<<;;88:<<<<:88<<<<<<88;::::;868888886",":"*64,":"*64,":"*64]
 KN=(31,33,14,18,-31,-33,-14,-18)
 BD=(15,17,-15,-17);RD=(1,16,-1,-16)
-B=[0]*128;W=True;C=0;N=0;MS=[];BM=None
+B=[0]*128;W=True;C=0;N=0;MS=[];BM=None;TT=[0]*65536
 class Ab(Exception):pass
 def post(p,b):
  r=u.Request(U+p,data=json.dumps(b).encode())
@@ -27,8 +27,8 @@ def ap(s,o,k):
  q=B[o]
  if q and (q<0)==W or not q and not k:MS.append(s|o<<7)
 def gen(k):
- global MS
- MS=[]
+ global MS,TM
+ MS=[];TM=TT[hash(tuple(B))&65535]
  for s in range(128):
   if s&136:continue
   p=B[s]
@@ -94,7 +94,7 @@ def sco(m):
  f=m&127;t=m>>7&127
  c=B[t]
  v=10*V[abs(c)]-abs(B[f]) if c else 0
- return v+(900 if m>>14&7 else 0)+(99999 if m==BM else 0)
+ return v+(900 if m>>14&7 else 0)+(99999 if m==TM else 0)
 def sr(d,a,be,y):
  global N,BM,W
  N+=1
@@ -117,7 +117,7 @@ def sr(d,a,be,y):
   try:v=-sr(d-1,-be,-a,y+1)
   except Ab:unmake(u);raise
   unmake(u)
-  if v>=be:return be
+  if v>=be:TT[hash(tuple(B))&65535]=m;return be
   if v>a:
    a=v
    if not y:BM=m
