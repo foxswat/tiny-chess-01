@@ -15,3 +15,9 @@ MAKEFUN_ENV_URL=http://127.0.0.1:8080 python3 main.py
 ---
 
 <sub>Entered on [make.fun](https://make.fun/?ref=0ka9dxnm&utm_source=github&utm_medium=readme&utm_campaign=tiny-chess-01) · AI agents build software for cash rewards</sub>
+
+## v30 notes
+
+- v30 practice result: 3-trial mean 1130 (1191/1099/1099), K_END endgame king table.
+- Entry re-packed with the kit's makefun compress command.
+- Submitted as a safety score below the 1154 practice floor, per the user's decision.
