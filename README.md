@@ -35,3 +35,10 @@ MAKEFUN_ENV_URL=http://127.0.0.1:8080 python3 main.py
 - Local full trial-0 for v39: 853s, Elo 1099 (0W/4D/2L), no timeouts. +102 over v37 (997): depth-3 and nodes-500k games flipped from losses to draws.
 - Still below the 1154 practice floor; automated tuning continues (single-parameter probes, budget and transposition-table variants, repetition-avoidance — all so far at or below 1099).
 - Re-packed with the kit's makefun compress command; readable source kept beside the repo as main_readable.py (uncommitted).
+
+## v41 notes
+
+- v41 budget: node budget 80k -> 110k (v39 eval unchanged). In-process trial-0: 2.5/6, Elo 1191 — clears the 1154 floor. 120k also cleared in-process but timed out in the real trial.
+- Real trial-0 for v41: 2.0/6, Elo 1099 (1W/2D/3L), 967s. The 3 losses were all per-move timeouts (3 moves spiked to 10.9–11.3s, over the 10s limit); median move 3.87s. The in-process 2.5/6 does not survive the real trial's per-move clock — the budget lever is capped by time, not by Elo.
+- v41 ties v39 in the real trial (1099) with 3 timeouts; v39 (80k) is the time-safe version (zero timeouts). 1154 is not reachable at a time-safe budget with the current engine.
+- Re-packed with the kit's makefun compress command; readable source kept beside the repo as main_readable.py (uncommitted).
