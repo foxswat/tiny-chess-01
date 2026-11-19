@@ -48,5 +48,6 @@ MAKEFUN_ENV_URL=http://127.0.0.1:8080 python3 main.py
 - v44-grok angle: keep the v39 eval EXACTLY the same; fix the time problem instead of the score. Two changes: (a) score-neutral micro-optimizations to ev()/gen()/atk() (on-board squares only, precomputed king-endgame table, tracked king squares, inlined helpers — verified by a 300-game equivalence test, 50,823 positions, 0 mismatches); (b) a 7.0s hard abort checked every 512 nodes including quiescence, plus a 6.8s soft stop and a panic move, so no move can spike past 10s.
 - Bench (low load, back-to-back): v41 3.43/3.41/4.01/3.51s vs v44 1.91/1.79/2.35/1.41s (startpos/kiwipete/midgame/endgame) — ~1.9x faster, all 4 moves identical.
 - Real trial-0 for v44: 2.5/6, Elo 1191 (1W/3D/2L), 723s, engine exit 0, ZERO per-move timeouts. Same score line as v43 trial-0 (identical eval + score-neutral opts -> identical games) but 723s vs v41's 967s. Clears the 1154 floor.
+- Trial-1: Elo 997 (0W/3D/3L), 662s, zero timeouts. Trial-2: Elo 1099 (1W/2D/3L), 723s, zero timeouts. 3-trial mean 1096.
 - Grok (CLI) was the designer/drafter for the time-cap + micro-opt design; all edits applied by hand in a Muse session. Design notes in the grok work dir.
 - Re-packed with the kit's makefun compress command (3405 B, packed==clean verified); readable source kept beside the repo as main_readable.py (uncommitted).
