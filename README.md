@@ -42,3 +42,39 @@ MAKEFUN_ENV_URL=http://127.0.0.1:8080 python3 main.py
 - Real trial-0 for v41: 2.0/6, Elo 1099 (1W/2D/3L), 967s. The 3 losses were all per-move timeouts (3 moves spiked to 10.9–11.3s, over the 10s limit); median move 3.87s. The in-process 2.5/6 does not survive the real trial's per-move clock — the budget lever is capped by time, not by Elo.
 - v41 ties v39 in the real trial (1099) with 3 timeouts; v39 (80k) is the time-safe version (zero timeouts). 1154 is not reachable at a time-safe budget with the current engine.
 - Re-packed with the kit's makefun compress command; readable source kept beside the repo as main_readable.py (uncommitted).
+
+## v44 notes (base for v46)
+
+- v44-grok: v39 eval EXACT, plus a 7.0s hard wall-clock cap in sr()
+  (checked every 512 nodes, including quiescence) and score-neutral
+  micro-opts (ev() skips empty squares, K_END loop with precomputed BK
+  table, atk() target-set hoisting). Equivalence verified on 50,823
+  positions, 0 mismatches; choose() identical on all 6 test positions.
+- Local full trials at 110k: trial-0 1191 (1W/3D/2L, 723s), trial-1 997,
+  trial-2 1099 — mean 1096, zero timeouts in all 18 games. Bench at load
+  0.43: 1.91/1.79/2.35/1.41s per move (nps 47–78k), worst bench move 2.35s.
+- Re-packed with the kit's makefun compress command; readable source kept
+  beside the repo as main_readable.py (uncommitted).
+
+## v46 notes
+
+- v46 budget: node budget 110k -> 150k on the v44-grok base (eval EXACTLY
+  the same — only the `N > 110000` constant changed to `N > 150000`).
+  Why: the speedup work (v42/v43/v44 incremental eval + cap) made the
+  previously time-unsafe 150k budget affordable again.
+- Bench 150k at load 2.02: 2.32/2.34/2.89/1.97s per move (nps 52–76k),
+  avg 2.38s, worst 2.89s. Moves identical to v44. Packed 3416 B.
+- Local full trials at 150k: trial-0 **1279 (2W/2D/2L, 499s)**, trial-1
+  997 (0W/3D/3L, 581s), trial-2 997 clean re-run (0W/3D/3L, 1465s) —
+  mean 1091, zero timeouts in all 18 games. A first trial-2 run scored
+  876 under an ffmpeg load spike (99/320 moves capped); the clean re-run
+  gives 997. Trial-0 1279 is the best verified trial-0 of any version
+  (110k: 1191) and the platform grade is trial-0 only, so v46 is the
+  best submission candidate. Note: trial-2 took 1465s local (322 moves);
+  on the slower platform a long-draw final trial could approach the
+  1800s wall clock — the 7s cap bounds per-move time, so the risk is
+  move-count-driven.
+- 120k also tested (same base): bench avg 2.69s, real trial-0 1191
+  (1W/3D/2L, 801s, zero timeouts) — ties 110k, does not beat it.
+- Re-packed with the kit's makefun compress command; readable source kept
+  beside the repo as main_readable.py (uncommitted).
