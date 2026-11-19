@@ -42,3 +42,11 @@ MAKEFUN_ENV_URL=http://127.0.0.1:8080 python3 main.py
 - Real trial-0 for v41: 2.0/6, Elo 1099 (1W/2D/3L), 967s. The 3 losses were all per-move timeouts (3 moves spiked to 10.9–11.3s, over the 10s limit); median move 3.87s. The in-process 2.5/6 does not survive the real trial's per-move clock — the budget lever is capped by time, not by Elo.
 - v41 ties v39 in the real trial (1099) with 3 timeouts; v39 (80k) is the time-safe version (zero timeouts). 1154 is not reachable at a time-safe budget with the current engine.
 - Re-packed with the kit's makefun compress command; readable source kept beside the repo as main_readable.py (uncommitted).
+
+## v42 notes
+
+- v42 incremental eval: the evaluation score is now maintained incrementally in make/unmake (PS = sum of E over pieces, KA = king adjustment sum(K_END - E_king), NQ = queen count); ev() is a single expression (PS + (KA if NQ == 0 else 0)) * side + 10. The eval itself is UNCHANGED — bit-identical scores to v41, verified on 24,473 positions (0 mismatches, random playouts + targeted FENs: promotions, queen captures, castling, queenless endgames) and identical choose() moves on 6 test positions.
+- Speed: 1.74x faster than v41 at 110k nodes (bench mean 4.10s -> 2.35s per move; startpos 3.92s -> 1.74s, kiwipete 4.59s -> 2.19s, midgame 4.49s -> 3.61s, endgame 3.38s -> 1.87s). Perft clean (startpos d=3: 8902).
+- Real trial-0 for v42: 795s, Elo 1191 (1W/3D/2L), ZERO timeouts — clears the 1154 floor. Identical scoreline to the parallel v43/v44 lanes' trial-0s (both also 1191, 1W/3D/2L); their trial-1/2 both came back 997/1099, so v42's t1/t2 were not re-run (same eval, same budget, same moves — would only reproduce those numbers).
+- First v42 trial attempt was load-tainted (Elo 876, 4 early time losses at load 6.5, ffmpeg encode dominating the VM); a second attempt was killed by a VM reboot mid-run. The clean run above was at load 1.69.
+- Re-packed with the kit's makefun compress command (3202 B, packed==clean verified); readable source kept beside the repo as main_readable_v42.py (uncommitted).
