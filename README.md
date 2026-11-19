@@ -28,3 +28,10 @@ MAKEFUN_ENV_URL=http://127.0.0.1:8080 python3 main.py
 - Why: v30 scored 0 on the platform practice grade — the trial hit the 1800s wall clock (5.4s/move average) and untimed trials score 0 on every column.
 - Local full trial-0 for v37: 1003s, Elo 997, no timeouts. A 100k variant trialled identically (997, 807s); 80k kept for the bigger time margin.
 - Re-packed with the kit's makefun compress command; readable source kept beside the repo as main_readable.py (uncommitted).
+
+## v39 notes
+
+- v39 tuning: knight value 320 -> 335, rook piece-square scale 1.0 -> 0.85. Found by automated coordinate search (machine tuning, not hand-designed ideas), validated at the full 80k budget.
+- Local full trial-0 for v39: 853s, Elo 1099 (0W/4D/2L), no timeouts. +102 over v37 (997): depth-3 and nodes-500k games flipped from losses to draws.
+- Still below the 1154 practice floor; automated tuning continues (single-parameter probes, budget and transposition-table variants, repetition-avoidance — all so far at or below 1099).
+- Re-packed with the kit's makefun compress command; readable source kept beside the repo as main_readable.py (uncommitted).
