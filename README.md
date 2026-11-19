@@ -78,3 +78,23 @@ MAKEFUN_ENV_URL=http://127.0.0.1:8080 python3 main.py
   (1W/3D/2L, 801s, zero timeouts) — ties 110k, does not beat it.
 - Re-packed with the kit's makefun compress command; readable source kept
   beside the repo as main_readable.py (uncommitted).
+
+## v47 notes
+
+- v47 adaptive budget (v44b idea): root |ev|<100 -> 130k nodes, |ev|>300 ->
+  80k, else 110k, on the v46 (150k) base. Eval EXACTLY the same — only the
+  budget rule changed (`NB` global; `sr()` cap `N > NB`; `choose()` picks
+  NB from one root `ev()` call). 7.0 s hard cap unchanged.
+- Branch verification: startpos ev=10 -> NB=130000 (130001 nodes used);
+  two-pawns-up ev=170 -> NB=110000 (110001); bishop-up ev=340 -> NB=80000
+  (80001). All three branches engage; node cap hit exactly.
+- Bench at load ~1.6: 2.08/1.75/2.55/1.72s per move, avg 2.03s, worst
+  2.55s. Moves identical to v44/v46. Packed 3207 B, packed==clean verified.
+- Local full trial-0: **1191 (1W/3D/2L, 342s), zero timeouts** — does NOT
+  beat v46's 1279. Mean think 1.92s (vs 2.72s for v46 t0): faster, but time
+  was not the constraint. In real games the root eval is |ev|<100 most of
+  the time, so most moves ran at 130k, giving up the 150k edge. No
+  trial-1/2 run (per task rules: do not chase noise). v46-150k remains the
+  best verified version.
+- Re-packed with the kit's makefun compress command; readable source kept
+  beside the repo as main_readable.py (uncommitted).
