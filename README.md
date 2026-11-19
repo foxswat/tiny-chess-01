@@ -42,3 +42,7 @@ MAKEFUN_ENV_URL=http://127.0.0.1:8080 python3 main.py
 - Real trial-0 for v41: 2.0/6, Elo 1099 (1W/2D/3L), 967s. The 3 losses were all per-move timeouts (3 moves spiked to 10.9–11.3s, over the 10s limit); median move 3.87s. The in-process 2.5/6 does not survive the real trial's per-move clock — the budget lever is capped by time, not by Elo.
 - v41 ties v39 in the real trial (1099) with 3 timeouts; v39 (80k) is the time-safe version (zero timeouts). 1154 is not reachable at a time-safe budget with the current engine.
 - Re-packed with the kit's makefun compress command; readable source kept beside the repo as main_readable.py (uncommitted).
+
+- v43-codex incremental eval (Codex, gpt-6.1-sol): single-score S + king-adjustment KD + queen-count NQ, K_END queen-transition jumps applied in make(); ev() is one read, no loop. Equivalence vs v41: 50,823 positions, 0 mismatches; choose() identical on all 6 test positions. Bench 110k ~50% faster than v41 (same moves).
+- Real trial-0 for v43: 2.5/6, Elo 1191 (1W/3D/2L), 1293s, ZERO time losses — CLEARS THE 1154 FLOOR. Per-move think median 3.26s, max 9.41s (356 moves, 0 over 10s). First incremental-eval version to clear the floor in a real trial (v42 scored 876 the same morning, 4 time losses).
+- Packed with the kit's makefun compress command (3,216 B); readable source main_readable_v43_codex.py kept beside the entry.
