@@ -42,3 +42,18 @@ MAKEFUN_ENV_URL=http://127.0.0.1:8080 python3 main.py
 - Real trial-0 for v41: 2.0/6, Elo 1099 (1W/2D/3L), 967s. The 3 losses were all per-move timeouts (3 moves spiked to 10.9–11.3s, over the 10s limit); median move 3.87s. The in-process 2.5/6 does not survive the real trial's per-move clock — the budget lever is capped by time, not by Elo.
 - v41 ties v39 in the real trial (1099) with 3 timeouts; v39 (80k) is the time-safe version (zero timeouts). 1154 is not reachable at a time-safe budget with the current engine.
 - Re-packed with the kit's makefun compress command; readable source kept beside the repo as main_readable.py (uncommitted).
+
+## v45-agy notes (FAILED variant — Antigravity, gemini-4-argon-medium)
+
+- v45-agy: king pawn shield on top of v39 (VN 335 + rook PST x0.85, 80k).
+  Middlegame only: +SHIELD per friendly pawn on the 3 forward squares of
+  the king. Chosen because v39's trial-0 losses were both by mate.
+- SHIELD=10, full 6-game in-process trial-0 at 80k: 1.5/6 (W69, D71, L104,
+  L43, L64, L107), Elo 997 — HURTS vs v39 2.0/6 (1099). Flips: g1 draw->win
+  (+0.5) but g5 draw->loss and g6 draw->loss (-1.0). Same pattern as
+  contempt: helps vs the weakest opponent, hurts vs strong ones.
+- SHIELD=5, 3-game screen: 1.0/3 (D, D, L) — identical to v39 baseline.
+  No gain. Feature dead at both weights; do not retry.
+- Equivalence: v45 with SHIELD=0 == v37+theta(v39) on ev() for 315
+  positions, 0 mismatches; perft clean (startpos d=3 8902).
+- Work dir: ~/workspace/makefun/tiny-chess-agy/ (tune_agy.py, logs, NOTES.md).
